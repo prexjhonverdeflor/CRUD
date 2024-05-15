@@ -1,0 +1,108 @@
+{% extends 'webapp/base.html' %} 
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+
+<div class="container mt-4">
+<div id="main">
+  <span style="font-size: 30px; cursor: pointer" onclick="openNav()"
+    >&#9776;
+  </span>
+  
+  <h5>Welcome, {{user}}</h5>
+  <h1 class="dashboard">Customer</h1>
+ 
+  <br />
+
+  <a class="btn btn-dark btn-sm" href="{% url 'customer_create' %}">
+    Create record &nbsp; <i class="fa fa-plus" aria-hidden="true"></i>
+  </a>
+  
+  <br />
+  <br />
+
+  <table id="table" class="table table-sm table-light table-hover shadow">
+    <thead class="table-active">
+      <tr>
+        <th scope="col"> ID</th>
+        <th scope="col"> Fullname</th>
+        <th scope="col"> Firstname</th>
+        <th scope="col"> Middlename</th>
+        <th scope="col"> Lastname</th>
+        <th scope="col"> Address</th>
+        <th scope="col"> Level</th>
+        <th scope="col"> Actions</th>
+
+
+      </tr>
+    </thead>
+    <tbody>
+      {% if customers %}
+      {% for customer in customers %}
+      <tr>
+          <td>{{ customer.customer_id }}</td>
+          <td>{{ customer.customer_fullname }}</td>
+          <td>{{ customer.customer_firstname }}</td>
+          <td>{{ customer.customer_middlename }}</td>
+          <td>{{ customer.customer_lastname }}</td>
+          <td>{{ customer.customer_address }}</td>
+          <td>{{ customer.customer_level }}</td>
+
+       
+      <td>
+        <a
+        class="btn btn-dark btn-sm"
+        href="{% url 'customer_update' customer.customer_id %}"
+        >Edit <i class="fa fa-pencil-square-o" aria-hidden="true"></i
+        ></a>
+
+        <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#confirmDeleteModal" onclick="setDeleteUrl('{{ customer.customer_id }}')">Delete</a>
+
+      <!-- Reusable Deletion Confirmation Modal -->
+    <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirmDeleteModalLabel">Delete Confirmation</h5>
+            
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete this record?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Cancel</button>
+            <a id="delete-record-btn" class="btn btn-danger btn-sm" href="#">Delete</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+
+      </td>
+    </tr>
+
+      {% endfor %}
+      
+      {% endif %}
+    </tbody>
+  </table>
+
+  <script>
+
+    function setDeleteUrl(recordId) {
+      var deleteUrl = "{% url 'customer_delete' 9999 %}".replace('9999', recordId);
+      document.getElementById('delete-record-btn').setAttribute('href', deleteUrl);
+    }
+  </script>
+  
+
+  {% for customer in customers %}
+
+  {% endfor %} 
+
+  {% endblock %}
+</div>
+</div>
